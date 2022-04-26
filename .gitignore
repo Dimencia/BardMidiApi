@@ -351,3 +351,6 @@ MigrationBackup/
 
 # Connection strings for ASP.NET APIs
 appsettings.json
+
+# Dataset originally in json
+knownSongs.json
