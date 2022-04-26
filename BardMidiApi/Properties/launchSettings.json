@@ -12,7 +12,7 @@
     "BardMidiApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "api/test",
+      "launchUrl": "api/MidiItems",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
@@ -22,7 +22,7 @@
     "IIS Express": {
       "commandName": "IISExpress",
       "launchBrowser": true,
-      "launchUrl": "api/test",
+      "launchUrl": "api/MidiItems",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -30,7 +30,7 @@
     "Docker": {
       "commandName": "Docker",
       "launchBrowser": true,
-      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/test",
+      "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/api/MidiItems",
       "publishAllPorts": true,
       "useSSL": true
     }
