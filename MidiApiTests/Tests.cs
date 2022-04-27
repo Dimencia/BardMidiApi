@@ -17,6 +17,7 @@ using System.Threading.Tasks;
 
 namespace MidiApiTests
 {
+    // Static class holding pre-load data for all tests to use
     public static class Tests
     {
 
@@ -24,25 +25,21 @@ namespace MidiApiTests
         private static bool _databaseInitialized;
 
 
-        // These will be tests of the web application, responses, etc itself
-        // Accuracy of data and etc will be tested elsewhere... 
-        // But we do still need test data... 
-
-        // I guess more specifically this should test GET endpoints only, because we can't include the put endpoints... 
         public static readonly WebApplicationFactory<Program> factory;
         public static readonly List<MidiUser> testUsers;
-        public static readonly List<MidiItem> testMidis; // It's nice to have these around to reference
+        public static readonly List<MidiItem> testMidis;
 
 
         static Tests()
         {
             using var context = CreateContextWithoutTransaction();
 
-            // These are used to unit test the API
+            // Create some arbitrary users and midis
+            // TODO: Pull some real data from the production set to be hardcoded here
             testUsers = new List<MidiUser>()
             { 
-                new MidiUser() { DisplayName = "Test User", ServiceId = 123874824 }, // 143123581
-                new MidiUser() { DisplayName = "Test User 2", ServiceId = 123872124 } // 1187352136
+                new MidiUser() { DisplayName = "Test User", ServiceId = 123874824 }, 
+                new MidiUser() { DisplayName = "Test User 2", ServiceId = 123872124 } 
             };
 
             testMidis = new List<MidiItem>()
@@ -57,8 +54,6 @@ namespace MidiApiTests
                 context.Database.EnsureDeleted();
                 context.Database.EnsureCreated();
 
-
-
                 foreach (var user in testUsers)
                     context.Add(user);
                 foreach (var midi in testMidis)
@@ -70,21 +65,21 @@ namespace MidiApiTests
                 _databaseInitialized = true;
             }
 
-            // The factory is used to test full functionality
+            // The factory is used to test full Client functionality - it can create HttpClients
             factory = new WebApplicationFactory<Program>()
             .WithWebHostBuilder(builder =>
             {
                 builder.ConfigureServices(services =>
                 {
-                    services.AddScoped<MidiContext>(s => CreateContext()); // Use test context, which enforces transactions to avoid saving test data
+                    services.AddScoped<MidiContext>(s => CreateContext()); // Use test context and values, which enforces transactions to avoid saving test data
                 });
             });
             
         }
 
 
-        // These might should go somewhere else like in MidiItem - but they're just for testing
-        // For normal purposes, we consider them equal if the hashes are equal
+        // These might should go somewhere else like in MidiItem - but they're only important for testing
+        // In general cases, a MidiItem or User equals another when its key equals another
         public static bool AllValuesEqual(MidiItem a, MidiItem b)
         {
             return a.DownloadUrl == b.DownloadUrl && a.Name == b.Name && a.Score == b.Score && a.Hash == b.Hash && a.AuthorNotes == b.AuthorNotes && a.UploadDate == b.UploadDate

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 namespace MidiApiTests
 {
     // This tests the API via directly calling the controller, using a test database on the production server
-    // The test database is populated and we have testUsers and testMidis
+    // The test database is populated and we have testUsers and testMidis from Tests
     public class ApiTests
     {
         [Test]

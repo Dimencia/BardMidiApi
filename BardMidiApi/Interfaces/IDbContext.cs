@@ -5,6 +5,9 @@ using Microsoft.EntityFrameworkCore.Internal;
 
 namespace BardMidiApi.Interfaces
 {
+    // This isn't being used, but is a good mock of everything in a DbContext
+    // If I need it for testing purposes, I should pull out only the parts that I'm using to IMidiContext
+    // to avoid having to override them all
     public interface IDbContext : IDisposable, IInfrastructure<IServiceProvider>
     {
         ChangeTracker ChangeTracker { get; }

@@ -11,8 +11,10 @@ using System.Threading.Tasks;
 namespace MidiApiTests
 {
     // This tests the HttpClient and end functionality, as a client
+    // Does not include any deserialization to avoid reliance on Newtonsoft
     public class ClientTests
     {
+        // Tests getting all midis, and ensures that the status code is a success, and the results aren't empty
         [Test]
         public async Task HttpGetAllMidiTest_ShouldHaveContent()
         {
@@ -20,13 +22,11 @@ namespace MidiApiTests
 
             var response = await client.GetAsync("/api/MidiItems");
             response.EnsureSuccessStatusCode();
-            // I'd like to deserialize and test but that would be too much to rely on in a unit test
-            // So we'll just make sure it's longer than "[]" - that it contains anything
             var text = await response.Content.ReadAsStringAsync();
             Assert.Greater(text.Length, 2);
         }
 
-
+        // Tests getting each specific midi in TestMidis and ensures a success code, and non-empty results
         [Test]
         public async Task HttpGetSpecificMidiTest_ShouldHaveContent()
         {
@@ -41,6 +41,8 @@ namespace MidiApiTests
             }
         }
 
+        // Tests updating each test midi and user with a small change, ensures success code
+        // Does rely on Newtonsoft to serialize
         [Test]
         public async Task HttpUpdateMidiTest_ShouldGiveSuccess()
         {
@@ -70,6 +72,7 @@ namespace MidiApiTests
             }
         }
 
+        // Tests adding a new Midi and Author, ensures success code
         [Test]
         public async Task HttpPostMidiTest_ShouldGiveSuccess()
         {
@@ -91,11 +94,13 @@ namespace MidiApiTests
 
                 newMidi.Author.DisplayName = "New Author";
                 newMidi.Author.ServiceId = (ulong)newMidi.Author.ServiceId.GetHashCode();
-                newMidi.Author.Id = null; // I have no clue how this ever became not-null
+                newMidi.Author.Id = null; 
 
                 var response = await client.PostAsync($"/api/MidiItems", new StringContent(JsonConvert.SerializeObject(newMidi), Encoding.UTF8, "application/json"));
                 response.EnsureSuccessStatusCode();
             }
         }
+
+        // TODO: Combined test; add a new set of items, read them, edit them, read them, delete them, read results
     }
 }

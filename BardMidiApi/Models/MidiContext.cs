@@ -12,8 +12,6 @@ namespace BardMidiApi.Models
 
         public MidiContext() : base(new DbContextOptions<MidiContext>()) { }
 
-        // Should these point at the interfaces...?  I think yes.  That's our contract, it has no functions, this is what comes from the db
-        // I guess not, code-first won't accept it.
         public virtual DbSet<MidiItem> MidiItems { get; set; } = null!;
         public virtual DbSet<MidiUser> Users { get; set; } = null!;
 
