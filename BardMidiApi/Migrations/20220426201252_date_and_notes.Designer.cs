@@ -4,6 +4,7 @@ using BardMidiApi.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BardMidiApi.Migrations
 {
     [DbContext(typeof(MidiContext))]
-    partial class MidiContextModelSnapshot : ModelSnapshot
+    [Migration("20220426201252_date_and_notes")]
+    partial class date_and_notes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,9 +41,8 @@ namespace BardMidiApi.Migrations
                     b.Property<string>("DownloadUrl")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Hash")
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
+                    b.Property<long>("Hash")
+                        .HasColumnType("bigint");
 
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
@@ -60,7 +61,7 @@ namespace BardMidiApi.Migrations
 
                     b.HasIndex("Score");
 
-                    b.ToTable("MidiItems", (string)null);
+                    b.ToTable("MidiItems");
                 });
 
             modelBuilder.Entity("BardMidiApi.Models.MidiUser", b =>
@@ -79,7 +80,7 @@ namespace BardMidiApi.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BardMidiApi.Models.MidiItem", b =>

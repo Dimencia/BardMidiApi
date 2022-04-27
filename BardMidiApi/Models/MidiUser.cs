@@ -1,12 +1,19 @@
-﻿using BardMidiApi.Interfaces;
+﻿
+
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BardMidiApi.Models
 {
     public class MidiUser
     {
-        public int Id { get; set; }
-        public long ServiceId { get; set; }
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int? Id { get; set; }
+        public ulong ServiceId { get; set; }
         public string? DisplayName { get; set; }
-        public IEnumerable<MidiItem>? MidisContributed { get; set; }
+        [JsonIgnore]
+        public List<MidiItem>? MidisContributed { get; set; }
     }
 }

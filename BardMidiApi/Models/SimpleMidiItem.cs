@@ -1,15 +1,14 @@
-﻿
-using BardMidiApi.Interfaces;
-
-namespace BardMidiApi.Models
+﻿namespace BardMidiApi.Models
 {
     public class SimpleMidiItem
     {
-        public long Hash { get; set; }
+        public string? Hash { get; set; } 
         public string? Name { get; set; }
         public string? AuthorName { get; set; }
         public int? Score { get; set; }
         public string? DownloadUrl { get; set; }
+        public string? AuthorNotes { get; set; }
+        public DateTimeOffset UploadDate { get; set; }
 
         public SimpleMidiItem(MidiItem midi)
         {
@@ -19,6 +18,8 @@ namespace BardMidiApi.Models
             this.AuthorName = midi.Author?.DisplayName ?? string.Empty;
             this.Score = midi.Score;
             this.DownloadUrl = midi.DownloadUrl;
+            this.AuthorNotes = midi.AuthorNotes;
+            this.UploadDate = midi.UploadDate;
         }
     }
 }

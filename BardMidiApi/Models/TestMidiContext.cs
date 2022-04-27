@@ -1,21 +1,19 @@
 ﻿using BardMidiApi.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace BardMidiApi.Models
 {
-    public class MidiContext : DbContext
+    public class TestMidiContext : DbContext, IMidiContext
     {
-        public MidiContext(DbContextOptions<MidiContext> options)
+        public TestMidiContext(DbContextOptions<MidiContext> options)
             : base(options)
         {
         }
-
-        public MidiContext() : base(new DbContextOptions<MidiContext>()) { }
-
         // Should these point at the interfaces...?  I think yes.  That's our contract, it has no functions, this is what comes from the db
         // I guess not, code-first won't accept it.
-        public virtual DbSet<MidiItem> MidiItems { get; set; } = null!;
-        public virtual DbSet<MidiUser> Users { get; set; } = null!;
+        public DbSet<MidiItem> MidiItems { get; set; } = null!;
+        public DbSet<MidiUser> Users { get; set; } = null!;
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
