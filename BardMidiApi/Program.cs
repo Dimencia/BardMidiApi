@@ -10,6 +10,15 @@ using Newtonsoft.Json;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AnyOrigin", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers().AddNewtonsoftJson(x => 
     x.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore);
@@ -19,6 +28,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<MidiContext>(opt =>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
 );
+
 
 // TODO: Auth - Discord OAuth, or custom OAuth
 
@@ -36,16 +46,16 @@ builder.Services.AddDbContext<MidiContext>(opt =>
 var app = builder.Build();
 
 // Seeding from json file
-app.Lifetime.ApplicationStarted.Register(async () =>
-{
-    using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
-    {
-        var db = serviceScope.ServiceProvider.GetService<MidiContext>();
-        // Seed only if the db is completely empty
-        if(db != null || (db.MidiItems.Count() == 0 && db.Users.Count() == 0))
-            await Seed(db);
-    }
-});
+//app.Lifetime.ApplicationStarted.Register(async () =>
+//{
+//    using (var serviceScope = app.Services.GetRequiredService<IServiceScopeFactory>().CreateScope())
+//    {
+//        var db = serviceScope.ServiceProvider.GetService<MidiContext>();
+//        // Seed only if the db is completely empty
+//        if(db != null || (db.MidiItems.Count() == 0 && db.Users.Count() == 0))
+//            await Seed(db);
+//    }
+//});
 
 
 // Configure the HTTP request pipeline.
@@ -53,8 +63,13 @@ if (app.Environment.IsDevelopment())
 {
     app.UseDeveloperExceptionPage();
 }
+app.UseCors("AnyOrigin");
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c => {
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "Bard Midi API");
+    c.InjectStylesheet("/swagger/custom.css");
+    c.RoutePrefix = String.Empty;
+});
 
 app.UseHttpsRedirection();
 
