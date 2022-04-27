@@ -3,9 +3,7 @@ A project built for an upcoming interview, showcasing the creation of a REST API
 
 Includes: 
 - Dependency Injection
-- Unit Test Dependency Injection (WIP)
+- Unit Test Dependency Injection
 - LINQ Statements (Entity Framework Core)
-- Non-cluster indexing
+- Clustered and Non-clustered indexing
 - Performant SQL database
-- T-SQL Procedures (WIP)
-- OAuth2 for REST API (WIP)
