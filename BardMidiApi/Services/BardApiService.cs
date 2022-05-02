@@ -5,8 +5,7 @@ namespace BardMidiApi.Services
 {
     public class BardApiService
     {
-        // We might need this for something?  Let's find out what by not including it
-        //public BardApiService() { context = new MidiContext(); }
+        private int defaultRowsPerPage = 100;
 
         private MidiContext _context;
         public BardApiService(MidiContext context)
@@ -16,9 +15,13 @@ namespace BardMidiApi.Services
         }
         // TODO: I want to return IEnumerable, but I think I need to ToList in order to actually execute the query?  
         // Should I pass them the enumerable and let them do what they want with it?  
-        public async Task<List<SimpleMidiItem>> GetMidiItems()
+        // I don't think it's a good idea to defer statement execution to whenever they enumerate; that should all be encapsulated here
+        // So ToList here seems like a good idea
+        public async Task<ApiPaginatedList<SimpleMidiItem>> GetMidiItems(int page = 0, int? rowsPerPage = null)
         {
-            return await _context.MidiItems.Include(m => m.Author).Select(m => new SimpleMidiItem(m)).ToListAsync();
+            rowsPerPage = rowsPerPage ?? defaultRowsPerPage;
+            int numResults = await _context.MidiItems.CountAsync(); // This feels wrong
+            return await _context.MidiItems.Include(m => m.Author).Select(m => new SimpleMidiItem(m)).AsPaginatedListAsync(numResults, page, rowsPerPage.Value);
         }
 
         public async Task<SimpleMidiItem> GetMidiItem(string hash)

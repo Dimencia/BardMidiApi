@@ -23,11 +23,11 @@ namespace BardMidiApi.Controllers
             this.apiService = apiService;
         }
 
-        // GET: api/MidiItems
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<SimpleMidiItem>>> GetMidiItems()
+        // GET: api/MidiItems/all
+        [HttpGet("all/{page?}")]
+        public async Task<ActionResult<ApiPaginatedList<SimpleMidiItem>>> GetAllMidiItems(int page = 0)
         {
-            var result = await apiService.GetMidiItems();
+            var result = await apiService.GetMidiItems(page);
             if (result == null)
                 return BadRequest();
             return result;
