@@ -51,6 +51,17 @@ namespace BardMidiApi.Models
             this.UploadDate = simple.UploadDate;
         }
 
+        public MidiItem(MidiItem other)
+        {
+            this.Score = other.Score;
+            this.Author = other.Author;
+            this.Name = other.Name;
+            this.Hash = other.Hash;
+            this.DownloadUrl = other.DownloadUrl;
+            this.AuthorNotes = other.AuthorNotes;
+            this.UploadDate = other.UploadDate;
+        }
+
         public MidiItem() { }
     }
 }

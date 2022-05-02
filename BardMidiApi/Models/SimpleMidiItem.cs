@@ -25,5 +25,7 @@
             this.AuthorNotes = midi.AuthorNotes;
             this.UploadDate = midi.UploadDate;
         }
+
+        public SimpleMidiItem() { } // For json
     }
 }
